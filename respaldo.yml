@@ -1,0 +1,17 @@
+---
+- name: Backup running config
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+
+  - name: Obtener running-config
+    ios_command:
+      commands:
+        - show running-config
+    register: salida
+
+  - name: Guardar respaldo
+    copy:
+      content: "{{ salida.stdout[0] }}"
+      dest: "./backup_running_config.txt"
